@@ -88,6 +88,19 @@ public with sharing class FinancialIntegrationManager {
         return message;       
         
     }
+    @AuraEnabled
+    public static Void killUSBankStatusScheduled(){
+        try {
+            for(CronTrigger job:[SELECT Id,CronJobDetail.Name FROM CronTrigger where CronJobDetail.Name LIKE 'USBank Status Sync%'])
+            {
+                System.abortJob(job.id);
+               
+            }
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
     @AuraEnabled(cacheable=true)
     public static list<string> getSchedules(){
         try {

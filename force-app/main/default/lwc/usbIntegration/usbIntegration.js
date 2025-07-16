@@ -3,6 +3,7 @@ import fiLogos from '@salesforce/resourceUrl/fiLogos';
 import getUSBankSettings from '@salesforce/apex/FinancialIntegrationManager.getUSBankConfigurationSettings';
 import updateUSBankSettings from '@salesforce/apex/FinancialIntegrationManager.UpdateUSBankConfigurationSettings';
 import ScheduleUSBankForMin from '@salesforce/apex/FinancialIntegrationManager.ScheduleUSBankForMin';
+import killUSBankStatusScheduled  from '@salesforce/apex/FinancialIntegrationManager.killUSBankStatusScheduled';
 import setLeaseSchedule from '@salesforce/apex/USBankController.rateFactorLeaseData';
 export default class UsbIntegrationCard extends LightningElement {
     usbLogoUrl = `${fiLogos}/USB-logo.svg`;
@@ -121,8 +122,8 @@ export default class UsbIntegrationCard extends LightningElement {
         this.selectedStatusScheduleValue = event.target.value;
     }
     handleStatusScheduleClick() {
-        if (!this.selectedValue) {
-            this.showToast('Error', 'Value cannot be left blank!', 'error');
+        if (!this.selectedStatusScheduleValue) {
+            this.myToast('Error', 'Value cannot be left blank!', 'error');
             return;
         }
 
@@ -188,7 +189,7 @@ export default class UsbIntegrationCard extends LightningElement {
         const [hour, minute] = selectedTime.split(':').map(Number);
 
         if (minute % 15 !== 0) {
-            this.showToast('Please select a time in 15-minute intervals.', 'error');
+            this.myToast('Please select a time in 15-minute intervals.', 'error');
             event.target.setCustomValidity('Time must be in 15-minute increments');
         } else {
             event.target.setCustomValidity('');
