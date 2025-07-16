@@ -39,7 +39,65 @@ public with sharing class FinancialIntegrationManager {
             return 'An Error Occurred: ' + e.getMessage();
         }
     }
+    @AuraEnabled
+    public static String ScheduleUSBankForMin(String selectedValue){
+        String message ='';
+        try{
+           
+            for(CronTrigger job:[SELECT Id,CronJobDetail.Name FROM CronTrigger where CronJobDetail.Name LIKE 'USBank Status Sync%'])
+            {
+                System.abortJob(job.id);
+                message = 'Previous Job(s) removed. New ';
+            }
+            
+            if(selectedValue=='10'){                   
+                System.schedule('USBank Status Sync 0 Min', '0 0 * * * ?', new BatchToUpdateUSBankStatus());
+                System.schedule('USBank Status Sync 10 Min', '0 10 * * * ?', new BatchToUpdateUSBankStatus());
+                System.schedule('USBank Status Sync 20 Min', '0 20 * * * ?', new BatchToUpdateUSBankStatus());
+                System.schedule('USBank Status Sync 30 Min', '0 30 * * * ?', new BatchToUpdateUSBankStatus());
+                System.schedule('USBank Status Sync 40 Min', '0 40 * * * ?', new BatchToUpdateUSBankStatus());
+                System.schedule('USBank Status Sync 50 Min', '0 50 * * * ?', new BatchToUpdateUSBankStatus()); 
+                message += 'US Bank scheduler is running for every '+selectedValue+' Minutes.';
+            }else if(selectedValue=='20'){
+                System.schedule('USBank Status Sync 0 Min', '0 0 * * * ?', new BatchToUpdateUSBankStatus());
+                System.schedule('USBank Status Sync 20 Min', '0 20 * * * ?', new BatchToUpdateUSBankStatus());
+                System.schedule('USBank Status Sync 40 Min', '0 40 * * * ?', new BatchToUpdateUSBankStatus());
+                message += 'US Bank scheduler is running for every '+selectedValue+' Minutes.';
+            }else if(selectedValue=='30'){
+                System.schedule('USBank Status Sync 0 Min', '0 0 * * * ?', new BatchToUpdateUSBankStatus());
+                System.schedule('USBank Status Sync 30 Min', '0 30 * * * ?', new BatchToUpdateUSBankStatus());
+                message += 'US Bank scheduler is running for every '+selectedValue+' Minutes.';
+            }else if(selectedValue=='40'){
+                System.schedule('USBank Status Sync 0 Min', '0 0 * * * ?', new BatchToUpdateUSBankStatus());
+                System.schedule('USBank Status Sync 40 Min', '0 40 * * * ?', new BatchToUpdateUSBankStatus());
+                message += 'US Bank scheduler is running for every '+selectedValue+' Minutes.';
+            }else if(selectedValue=='50'){
+                System.schedule('USBank Status Sync 0 Min', '0 0 * * * ?', new BatchToUpdateUSBankStatus());
+                System.schedule('USBank Status Sync 50 Min', '0 50 * * * ?', new BatchToUpdateUSBankStatus());
+                message += 'US Bank scheduler is running for every '+selectedValue+' Minutes.';
+            }else if(selectedValue =='60'){
+                string CRON_EXP = '0 0 * * * ?'; //'0 0 0/1 1/1 * ? *';
+                system.schedule('USBank Status Sync' , CRON_EXP , new BatchToUpdateUSBankStatus());
+                message += 'US Bank scheduler is running for every 1 Hour.';
+            }
+            
+            
+        }catch(Exception e){
+            message = 'Error: '+e.getMessage()+', at line '+e.getLineNumber();
+        }
+        return message;       
+        
+    }
+    @AuraEnabled(cacheable=true)
+    public static list<string> getSchedules(){
+        try {
+            List<String> Schedules = new List<string>();
 
+            return Schedules;
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
     public class FieldInfo {
         @AuraEnabled public String fieldApiName;
         @AuraEnabled public String label;

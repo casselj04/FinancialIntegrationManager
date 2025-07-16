@@ -260,13 +260,72 @@
             <lightning-accordion allow-multiple-sections-open>
                 <lightning-accordion-section name="connection" label="Applications & Schedules:">
                     <!-- Your connection fields or table here -->
-                    <table style="width: 100%; border-collapse: collapse;">
-                        <tr>
-                            <td class="label-cell">Public Key:</td>
-                            <td class="value-cell">{publicKey}</td>
-                            <td class="label-cell">Private Key:</td>
-                            <td class="value-cell">{privateKey}</td>
-                        </tr>
+                   <table style="border-collapse: collapse; width: auto;">
+                        <thead>
+                            <tr>
+                                <td class="tbl=header">Schedulers:</td>
+                                <td class="tbl=header">Batch Now:</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="vertical-cell-label">Status Scheduler</td>
+                                <td class="vertical-cell">{publicKey}</td>
+
+                            </tr>
+                            <tr>
+                                <td class="vertical-cell">
+                                    <lightning-combobox
+                                        name="scheduler"
+                                        label=""
+                                        value={selectedValue}
+                                        options={statusScheduleOptions}
+                                        onchange={handleStatusScheduleValueChange}>
+                                    </lightning-combobox>
+                                </td>
+                                <td class="vertical-cell">{publicKey}</td>
+                            </tr>
+                            <tr>
+                                <td class="vertical-cell">
+                                    <lightning-button
+                                        label="Set Schedule"
+                                        onclick={handleStatusScheduleClick}
+                                        variant="brand"
+                                        disabled={isLoading}>
+                                    </lightning-button>
+                                </td>
+                                <td class="vertical-cell">{publicKey}</td>
+                            </tr>
+                                                       <tr>
+                                <td class="vertical-cell-label">Daily Lease Data Scheduler</td>
+                                <td class="vertical-cell">{publicKey}</td>
+
+                            </tr>
+                            <tr>
+                                <td class="vertical-cell">
+                                    <lightning-input
+                                        type="time"
+                                        label="Select Time"
+                                        name="leaseDataTime"
+                                        value={leaseSchedulerTime}
+                                        onchange={handleLeaseTimeChange}
+                                        step="900"> <!-- 900 seconds = 15 minutes -->
+                                    </lightning-input>
+                                </td>
+                                <td class="vertical-cell">{publicKey}</td>
+                            </tr>
+                            <tr>
+                                <td class="vertical-cell">
+                                    <lightning-button
+                                        label="Set Schedule"
+                                        onclick={handleLeaseScheduleClick}
+                                        variant="brand"
+                                        disabled={isLoading}>
+                                    </lightning-button>
+                                </td>
+                                <td class="vertical-cell">{publicKey}</td>
+                            </tr>
+                        </tbody>
                     </table>
                     <lightning-accordion allow-multiple-sections-open>
                         <lightning-accordion-section name="connection" label="Mapping Details:">
