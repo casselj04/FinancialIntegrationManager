@@ -3,3 +3,30 @@
     position:relative;
     top:-3pt;
 }
+.value-cell input{
+    border:none;
+    border-bottom:1px solid blue;
+      
+}
+.changed-style{
+    color:#c2c217;
+    font-weight:500;
+    
+}
+.responsive-input {
+    width: 100%;
+    box-sizing: border-box;
+}
+.value-cell{
+    min-width:150px;
+}
+.col1{
+    width:150px
+}
+.col2{
+    width:450px;
+}
+
+.label-cell{
+    padding-left:30px;
+}

@@ -6,212 +6,257 @@
         </div>
 
         <div class="slds-p-horizontal_medium">
-
-            <lightning-accordion allow-multiple-sections-open>
+            <lightning-accordion allow-multiple-sections-open active-section-name="connection">
                 <lightning-accordion-section name="connection" label="Connection Settings:">
-                    <table style="width: 100%; border-collapse: collapse;">
-                        <tr>
-                            <td>
-                                <label class="slds-form-element__label">
-                                    Client Id:
-                                    <lightning-helptext class="custom-help-icon"
-                                        content="This will be passed in each request. Obtain this value from US Bank.">
-                                    </lightning-helptext>
-                                </label>
-                            </td>
-                            <td>
-                                <lightning-input
-                                    value={settings.TSGCFG__Client_Id__c}
-                                    variant="label-hidden"
-                                    name="clientId">
-                                </lightning-input>
-                            </td>
-                            <td class="label-cell">
-                                <label class="slds-form-element__label">
-                                    Endpoint:
-                                    <lightning-helptext class="custom-help-icon"
-                                        content="US Bank API Endpoint.">
-                                    </lightning-helptext>
-                                </label>
-                            </td>
-                            <td class="value-cell">
-                                <lightning-input
-                                    value={settings.TSGCFG__Client_Id__c}
-                                    variant="label-hidden"
-                                    name="clientId">
-                                </lightning-input>
-                            </td>
-                        </tr>
+                    <br>
+                   <table style="border-collapse: collapse; width: auto;">
 
-                        <tr>
-                            <td class="label-cell">
-                                <label class="slds-form-element__label">
-                                    User Name:
-                                    <lightning-helptext class="custom-help-icon"
-                                        content="Used to generate the access token. Provided by US Bank.">
-                                    </lightning-helptext>
-                                </label>
-                            </td>
-                            <td class="value-cell"><lightning-input
-                                    value={settings.TSGCFG__Client_Id__c}
-                                    variant="label-hidden"
-                                    name="clientId">
-                                </lightning-input></td>
-                            <td class="label-cell">
-                                <label class="slds-form-element__label">
-                                    Lease Application Endpoint:
-                                    <lightning-helptext class="custom-help-icon"
-                                        content="US Bank authentication endpoint.">
-                                    </lightning-helptext>
-                                </label>
-                            </td>
-                            <td class="value-cell"><lightning-input
-                                    value={settings.TSGCFG__Client_Id__c}
-                                    variant="label-hidden"
-                                    name="clientId">
-                                </lightning-input></td>
-                        </tr>
+                        <tbody>
+                            <tr>
+                                <td class="label-cell">
+                                    <label class="slds-form-element__label">
+                                        {settingsLabel.tsgcfg__client_id__c}:
+                                        <lightning-helptext class="custom-help-icon"
+                                            content="This will be passed in each request and get it from US Bank.">
+                                        </lightning-helptext>
+                                    </label>
+                                </td>
+                                <td class="value-cell col1">
+                                    <input  class="responsive-input"
+                                    value={settingsMap.tsgcfg__client_id__c}
+                                        name="TSGCFG__Client_Id__c"
+                                        onchange={handleInputChange}/>
+                                </td>
+                                <td class="label-cell">
+                                    <label class="slds-form-element__label">
+                                        Endpoint:
+                                        <lightning-helptext class="custom-help-icon"
+                                            content="US Bank API Endpoint.">
+                                        </lightning-helptext>
+                                    </label>
+                                </td>
+                                <td class="value-cell col2">
+                                    <input  class="responsive-input"
+                                        value={settingsMap.tsgcfg__endpoint__c}
+                                        
+                                        name="tsgcfg__endpoint__c"
+                                        onchange={handleInputChange}/>
+                                </td>
+                            </tr>
 
-                        <tr>
-                            <td class="label-cell">
-                                <label class="slds-form-element__label">
-                                    Password:
-                                    <lightning-helptext class="custom-help-icon"
-                                        content="Used to generate the access token. Provided by US Bank.">
-                                    </lightning-helptext>
-                                </label>
-                            </td>
-                            <td class="value-cell"><lightning-input
-                                    value={settings.TSGCFG__Client_Id__c}
-                                    variant="label-hidden"
-                                    name="clientId">
-                                </lightning-input></td>
-                            <td class="label-cell">
-                                <label class="slds-form-element__label">
-                                    Lease Application XML Endpoint:
-                                    <lightning-helptext class="custom-help-icon"
-                                        content="US Bank Lease Application XML endpoint.">
-                                    </lightning-helptext>
-                                </label>
-                            </td>
-                            <td class="value-cell"><lightning-input
-                                    value={settings.TSGCFG__Client_Id__c}
-                                    variant="label-hidden"
-                                    name="clientId">
-                                </lightning-input></td>
-                        </tr>
+                            <tr>
+                                <td class="label-cell">
+                                    <label class="slds-form-element__label">
+                                        User Name:
+                                        <lightning-helptext class="custom-help-icon"
+                                            content="Used to generate the access token. Provided by US Bank.">
+                                        </lightning-helptext>
+                                    </label>
+                                </td>
+                                <td class="value-cell col1">
+                                    <input  class="responsive-input"
+                                        
+                                        value={settingsMap.tsgcfg__user_name__c}
+                                        
+                                        name="tsgcfg__user_name__c"
+                                        onchange={handleInputChange}/>
+                                </td>
+                                <td class="label-cell">
+                                    <label class="slds-form-element__label">
+                                        Lease Application Endpoint:
+                                        <lightning-helptext class="custom-help-icon"
+                                            content="US Bank authentication endpoint.">
+                                        </lightning-helptext>
+                                    </label>
+                                </td>
+                                <td class="value-cell col2">
+                                    <input  class="responsive-input"
+                                        
+                                        value={settingsMap.tsgcfg__lease_application_endpoint__c}
+                                        
+                                        name="tsgcfg__lease_application_endpoint__c"
+                                        onchange={handleInputChange}/>
+                                </td>
+                            </tr>
 
-                        <tr>
-                            <td class="label-cell">
-                                <label class="slds-form-element__label">
-                                    US Bank - Business Name:
-                                    <lightning-helptext class="custom-help-icon"
-                                        content="If blank, the default 'US Bank' will be used to identify the leasing company in the Agreement.">
-                                    </lightning-helptext>
-                                </label>
-                            </td>
-                            <td class="value-cell"><lightning-input
-                                    value={settings.TSGCFG__Client_Id__c}
-                                    variant="label-hidden"
-                                    name="clientId">
-                                </lightning-input></td>
-                            <td class="label-cell">
-                                <label class="slds-form-element__label">
-                                    Lease Credit Decision Endpoint:
-                                    <lightning-helptext class="custom-help-icon"
-                                        content="US Bank Lease Credit Decision endpoint.">
-                                    </lightning-helptext>
-                                </label>
-                            </td>
-                            <td class="value-cell"><lightning-input
-                                    value={settings.TSGCFG__Client_Id__c}
-                                    variant="label-hidden"
-                                    name="clientId">
-                                </lightning-input></td>
-                        </tr>
+                            <tr>
+                                <td class="label-cell">
+                                    <label class="slds-form-element__label">
+                                        Password:
+                                        <lightning-helptext class="custom-help-icon"
+                                            content="Used to generate the access token. Provided by US Bank.">
+                                        </lightning-helptext>
+                                    </label>
+                                </td>
+                                <td class="value-cell col1">
+                                    <input  class="responsive-input"
+                                        
+                                        value={settingsMap.tsgcfg__password__c}
+                                        
+                                        name="tsgcfg__password__c"
+                                        onchange={handleInputChange}/>
+                                </td>
+                                <td class="label-cell">
+                                    <label class="slds-form-element__label">
+                                        Lease Application XML Endpoint:
+                                        <lightning-helptext class="custom-help-icon"
+                                            content="US Bank Lease Application XML endpoint.">
+                                        </lightning-helptext>
+                                    </label>
+                                </td>
+                                <td class="value-cell col2">
+                                    <input  class="responsive-input"
+                                        
+                                        value={settingsMap.tsgcfg__lease_application_xml_endpoint__c}
+                                        
+                                        name="tsgcfg__lease_application_xml_endpoint__c"
+                                        onchange={handleInputChange}/>
+                                </td>
+                            </tr>
 
-                        <tr>
-                            <td class="label-cell">
-                                <label class="slds-form-element__label">
-                                    BuyOut Lease Id:
-                                    <lightning-helptext class="custom-help-icon"
-                                        content="Agreement field to use for submitting SubmitBuyoutQuote. Defaults to Lease_ID__c unless overridden.">
-                                    </lightning-helptext>
-                                </label>
-                            </td>
-                            <td class="value-cell"><lightning-input
-                                    value={settings.TSGCFG__Client_Id__c}
-                                    variant="label-hidden"
-                                    name="clientId">
-                                </lightning-input></td>
-                            <td class="label-cell">
-                                <label class="slds-form-element__label">
-                                    Buyout Quote/Lease Service Web Service EndPoint:
-                                    <lightning-helptext class="custom-help-icon"
-                                        content="Buyout Quote/Lease Service Web Service endpoint.">
-                                    </lightning-helptext>
-                                </label>
-                            </td>
-                            <td class="value-cell"><lightning-input
-                                    value={settings.TSGCFG__Client_Id__c}
-                                    variant="label-hidden"
-                                    name="clientId">
-                                </lightning-input></td>
-                        </tr>
+                            <tr>
+                                <td class="label-cell">
+                                    <label class="slds-form-element__label">
+                                        US Bank - Business Name:
+                                        <lightning-helptext class="custom-help-icon"
+                                            content="If blank, the default 'US Bank' will be used to identify the leasing company in the Agreement.">
+                                        </lightning-helptext>
+                                    </label>
+                                </td>
+                                <td class="value-cell col1">
+                                    <input  class="responsive-input"
+                                        
+                                        value={settingsMap.tsgcfg__business_name__c}
+                                        
+                                        name="tsgcfg__business_name__c"
+                                        onchange={handleInputChange}/>
+                                </td>
+                                <td class="label-cell">
+                                    <label class="slds-form-element__label">
+                                        Lease Credit Decision Endpoint:
+                                        <lightning-helptext class="custom-help-icon"
+                                            content="US Bank Lease Credit Decision endpoint.">
+                                        </lightning-helptext>
+                                    </label>
+                                </td>
+                                <td class="value-cell col2">
+                                    <input  class="responsive-input"
+                                        
+                                        value={settingsMap.tsgcfg__lease_credit_decision_endpoint__c}
+                                        
+                                        name="tsgcfg__lease_credit_decision_endpoint__c"
+                                        onchange={handleInputChange}/>
+                                </td>
+                            </tr>
 
-                        <tr>
-                            <td class="label-cell">
-                                <label class="slds-form-element__label">
-                                    Tax Id:
-                                    <lightning-helptext class="custom-help-icon"
-                                        content="Field API from Deal object used to pass Fed Tax ID in the request.">
-                                    </lightning-helptext>
-                                </label>
-                            </td>
-                            <td class="value-cell"><lightning-input
-                                    value={settings.TSGCFG__Client_Id__c}
-                                    variant="label-hidden"
-                                    name="clientId">
-                                </lightning-input></td>
-                            <td class="label-cell">
-                                <label class="slds-form-element__label">
-                                    Duration to request GetBuyoutQuote:
-                                    <lightning-helptext class="custom-help-icon"
-                                        content="Delay in minutes before sending GetBuyoutQuote after SubmitBuyoutQuote. Defaults to 2 min if blank.">
-                                    </lightning-helptext>
-                                </label>
-                            </td>
-                            <td class="value-cell"><lightning-input
-                                    value={settings.TSGCFG__Client_Id__c}
-                                    variant="label-hidden"
-                                    name="clientId">
-                                </lightning-input></td>
-                        </tr>
+                            <tr>
+                                <td class="label-cell">
+                                    <label class="slds-form-element__label">
+                                        BuyOut Lease Id:
+                                        <lightning-helptext class="custom-help-icon"
+                                            content="Agreement field to use for submitting SubmitBuyoutQuote. Defaults to Lease_ID__c unless overridden.">
+                                        </lightning-helptext>
+                                    </label>
+                                </td>
+                                <td class="value-cell col1">
+                                    <input  class="responsive-input"
+                                        
+                                        value={settingsMap.tsgcfg__buyout_lease_id__c}
+                                        
+                                        name="tsgcfg__buyout_lease_id__c"
+                                        onchange={handleInputChange}/>
+                                </td>
+                                <td class="label-cell">
+                                    <label class="slds-form-element__label">
+                                        Buyout Quote/Lease Service Web Service EndPoint:
+                                        <lightning-helptext class="custom-help-icon"
+                                            content="Buyout Quote/Lease Service Web Service endpoint.">
+                                        </lightning-helptext>
+                                    </label>
+                                </td>
+                                <td class="value-cell col2">
+                                    <input  class="responsive-input"
+                                        
+                                        value={settingsMap.tsgcfg__buyout_quote_service_endpoint__c}
+                                        
+                                        name="tsgcfg__buyout_quote_service_endpoint__c"
+                                        onchange={handleInputChange}/>
+                                </td>
+                            </tr>
 
-                        <tr>
-                            <td class="label-cell"></td>
-                            <td class="value-cell"><lightning-input
-                                    value={settings.TSGCFG__Client_Id__c}
-                                    variant="label-hidden"
-                                    name="clientId">
-                                </lightning-input></td>
-                            <td class="label-cell">
-                                <label class="slds-form-element__label">
-                                    Buyout Quote Month-End Threshold Day:
-                                    <lightning-helptext class="custom-help-icon"
-                                        content="If the request is after this day of the month, quote is valid through the end of next month.">
-                                    </lightning-helptext>
-                                </label>
-                            </td>
-                            <td class="value-cell"><lightning-input
-                                    value={settings.TSGCFG__Client_Id__c}
-                                    variant="label-hidden"
-                                    name="clientId">
-                                </lightning-input></td>
-                        </tr>
+                            <tr>
+                                <td class="label-cell">
+                                    <label class="slds-form-element__label">
+                                        Tax Id:
+                                        <lightning-helptext class="custom-help-icon"
+                                            content="Field API from Deal object used to pass Fed Tax ID in the request.">
+                                        </lightning-helptext>
+                                    </label>
+                                </td>
+                                <td class="value-cell col1">
+                                    <input  class="responsive-input"
+                                        value={settingsMap.tsgcfg__tax_id__c}
+                                        name="tsgcfg__tax_id__c"
+                                        onchange={handleInputChange}/>
+                                </td>
+                                <td class="label-cell">
+                                    <label class="slds-form-element__label">
+                                        Duration to request GetBuyoutQuote:
+                                        <lightning-helptext class="custom-help-icon"
+                                            content="Delay in minutes before sending GetBuyoutQuote after SubmitBuyoutQuote. Defaults to 2 min if blank.">
+                                        </lightning-helptext>
+                                    </label>
+                                </td>
+                                <td class="value-cell col2">
+                                    <input  class="responsive-input"
+                                    value={settingsMap.tsgcfg__duration_to_request_getbuyoutquote__c}
+                                    name="tsgcfg__duration_to_request_getbuyoutquote__c"
+                                        onchange={handleInputChange}/>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="label-cell"></td>
+                                <td class="value-cell col1"></td>
+                                <td class="label-cell">
+                                    <label class="slds-form-element__label">
+                                        Buyout Quote Month-End Threshold Day:
+                                        <lightning-helptext class="custom-help-icon"
+                                            content="If the request is after this day of the month, quote is valid through the end of next month.">
+                                        </lightning-helptext>
+                                    </label>
+                                </td>
+                                <td class="value-cell col2">
+                                    <input  class="responsive-input"
+                                        
+                                        value={settingsMap.tsgcfg__buyout_quote_month_end_threshold_day__c}
+                                        
+                                        name="tsgcfg__buyout_quote_month_end_threshold_day__c"
+                                        onchange={handleInputChange}/>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4">
+                                    <div style="text-align:center;margin:0 auto;padding:20px;">
+                                        <lightning-button
+                                            label="Save"
+                                            title="Save"
+                                            variant="brand"
+                                            onclick={handleConnSaveClick}
+                                            disabled={isSaveDisabled}>
+                                        </lightning-button>
+
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
                     </table>
+                    
                 </lightning-accordion-section>
             </lightning-accordion>
+            <hr>
             <lightning-accordion allow-multiple-sections-open>
                 <lightning-accordion-section name="connection" label="Applications & Schedules:">
                     <!-- Your connection fields or table here -->

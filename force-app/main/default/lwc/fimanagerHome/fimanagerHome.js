@@ -1,5 +1,5 @@
 import { LightningElement, track } from 'lwc';
-
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 export default class FimanagerHome extends LightningElement {
     isLoading=true;
     @track activeTab = 'home';
@@ -42,7 +42,10 @@ export default class FimanagerHome extends LightningElement {
 
         this.showCustomTooltip(event,msg );
     }        
-
+    hideTooltip(){
+        this.showTooltip = false;
+       // console.log('TOOLTIP HIDDEN');
+    }
     showCustomTooltip(event, text) {
         let yVar = 140;
 

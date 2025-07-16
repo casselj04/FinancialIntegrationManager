@@ -31,7 +31,7 @@ public class USBankController {
         }
     }
     
-    @AuraEnabled
+     @AuraEnabled(cacheable=true)
     public static US_Bank_Configuration__c getCustomSettingDetails(){
         TSGCFG__US_Bank_Configuration__c config = TSGCFG__US_Bank_Configuration__c.getOrgDefaults();
         return config;
