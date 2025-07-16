@@ -1,0 +1,65 @@
+<template>
+  <template if:true={isLoading}>
+    <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+    </lightning-spinner>
+</template>
+
+  <lightning-card title="Scheduler" icon-name="custom:custom19">
+      
+      
+
+      <div class="slds-var-m-around_medium">
+        
+        {schedulerValues.message}<br/>
+        Next Scheduled Run: 
+        <b><lightning-formatted-date-time value={schedulerValues.NextFireTime} time-zone={schedulerValues.TimeZoneSidKey} hour="2-digit"
+        minute="2-digit"
+        time-zone-name="short"></lightning-formatted-date-time>
+        <br/>
+        Please note: Scheduling will remove all existing schedulers (if exist any).</b>
+      
+      </div>
+
+      <div class="slds-var-m-around_medium">
+        <lightning-combobox
+          data-name="interval"
+          name="interval"
+          label="Interval"
+          value={obj.interval}
+          placeholder="Select Interval"
+          options={intervalOptions}
+          onchange={changeHandler} required="true">
+        </lightning-combobox>
+      </div>
+
+      <div class="slds-var-m-around_medium">
+        <!-- Brand variant: Identifies the primary action in a group of buttons -->
+        <lightning-button variant="brand" label="Schedule" title="Schedule" onclick={validateData} class="slds-var-m-left_x-small"></lightning-button>
+      </div> 
+    </lightning-card>
+
+    <lightning-card title="Dealer Lease Admin Details" icon-name="custom:custom19">
+      <div class="slds-var-m-around_medium">
+        <div class="slds-var-p-around_medium lgc-bg">
+          <lightning-input label="First Name" value={custObj.TSGCFG__First_Name__c} name="TSGCFG__First_Name__c" onchange={changedealerHandler} type="text" ></lightning-input>
+        </div>
+        <div class="slds-var-p-around_medium lgc-bg">
+          <lightning-input label="Last Name" value={custObj.TSGCFG__Last_Name__c}  name="TSGCFG__Last_Name__c" onchange={changedealerHandler} type="text"  ></lightning-input>
+        </div>
+        <div class="slds-var-p-around_medium lgc-bg">
+          <lightning-input label="Email" value={custObj.TSGCFG__Email__c}  name="TSGCFG__Email__c" onchange={changedealerHandler} type="email"  ></lightning-input>
+        </div>
+        <div class="slds-var-p-around_medium lgc-bg">
+          <lightning-input label="Use Dealer Lease Admin Details for Credit App" value={custObj.TSGCFG__Dealer_Lease_Admin_Detail_for_Credit_App__c}
+          checked={custObj.TSGCFG__Dealer_Lease_Admin_Detail_for_Credit_App__c}  name="TSGCFG__Dealer_Lease_Admin_Detail_for_Credit_App__c" onchange={changedealerHandler} type="checkbox"  >
+          </lightning-input>
+        </div>
+        
+        <div class="slds-var-m-around_medium">
+          <!-- Brand variant: Identifies the primary action in a group of buttons -->
+          <lightning-button variant="brand" label="Save" title="Save" onclick={saveDetails} class="slds-var-m-left_x-small"></lightning-button>
+        </div>
+      </div>
+
+    </lightning-card>
+</template>

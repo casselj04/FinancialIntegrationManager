@@ -1,0 +1,96 @@
+<template>
+    <div class="fm-header">
+        <div>
+            <span style="position:relative; top:14px;">AgentDealer Financial Integrations Manager</span>
+                <lightning-spinner
+                    if:true={isLoading}
+                    alternative-text="Loading..."
+                    size="large"
+                    variant="brand">
+                </lightning-spinner>
+        </div>
+    </div>
+
+    <div style="max-height:1px; overflow:visible;">
+     </div>
+    <div class="custom-tab-container">
+
+        <ul class="tab-header">
+            <li class={getTabClassHome} onmouseover={showHomeTooltip} onmouseout={hideTooltip} onclick={handleHomeClick}>Financial Integrations Home</li>
+            <li class={getTabClassWF} onmouseover={showWFTooltip} onmouseout={hideTooltip} onclick={handleWFClick}>Wells Fargo</li>
+            <li class={getTabClassUSB} onmouseover={showUSBTooltip} onmouseout={hideTooltip} onclick={handleUSBClick}>US Bank</li>
+            <li class={getTabClassPS} onmouseover={showPSTooltip} onmouseout={hideTooltip} onclick={handlePSClick}>PEAC Solutions</li>
+            <li class={getTabClassLCC} onmouseover={showLCCTooltip} onmouseout={hideTooltip} onclick={handleLCCClick}>LEAF Commercial Capital</li>
+            <li class={getTabClassGA} onmouseover={showGATooltip} onmouseout={hideTooltip} onclick={handleGAClick}>Great America</li>
+            <li class={getTabClassDLL} onmouseover={showDLLTooltip} onmouseout={hideTooltip} onclick={handleDLLClick}>De Lage Landen</li>
+        
+        </ul>
+        <div class="tab-content slds-box">
+            <template if:true={showHome}>
+                <c-fimanager-splash 
+                    onchildstatusupdate={handleStatusUpdate}  
+                    onchildupdate={handleChildUpdate} 
+                    ontoastrequest={handleToastRequest}>
+                </c-fimanager-splash>
+            </template>
+
+            <template if:true={showWF}>
+                <c-wf-integration  
+                    onchildstatusupdate={handleStatusUpdate}  
+                    onchildupdate={handleChildUpdate} 
+                    ontoastrequest={handleToastRequest}>
+                </c-wf-integration>
+            </template>
+
+            <template if:true={showUSB}>
+                <!-- Typo here: extra hyphen in component name -->
+                <c-usb-integration  
+                    onchildstatusupdate={handleStatusUpdate} 
+                    onchildupdate={handleChildUpdate} 
+                    ontoastrequest={handleToastRequest}>
+                </c-usb-integration>
+            </template>
+
+            <template if:true={showPS}>
+                <c-ps-integration 
+                    onchildstatusupdate={handleStatusUpdate} 
+                    onchildupdate={handleChildUpdate} 
+                    ontoastrequest={handleToastRequest}>
+                </c-ps-integration>
+            </template>
+
+            <template if:true={showLCC}>
+                <!-- Typo here: component tag is c-lcc-integration but closing tag is c-llc-integration -->
+                <c-lcc-integration 
+                    onchildstatusupdate={handleStatusUpdate} 
+                    onchildupdate={handleChildUpdate} 
+                    ontoastrequest={handleToastRequest}>
+                </c-lcc-integration>
+            </template>
+
+            <template if:true={showGA}>
+                <c-ga-integration 
+                    onchildstatusupdate={handleStatusUpdate} 
+                    onchildupdate={handleChildUpdate} 
+                    ontoastrequest={handleToastRequest}>
+                </c-ga-integration>
+            </template>
+            <template if:true={showDLL}>
+                <c-dll-integration 
+                    onchildstatusupdate={handleStatusUpdate} 
+                    onchildupdate={handleChildUpdate} 
+                    ontoastrequest={handleToastRequest}>
+                </c-dll-integration>
+            </template>
+            <template if:true={showTooltip}>
+                <div class="custom-tooltip tooltip-container" style={tooltipStyle} lwc:dom="manual"></div>
+            </template>
+    </div>
+    </div>
+    <div class="status-bar" onmouseover={expandStatus} onmouseout={collapseStatus}>
+        <div class={statusTabClass}>▲</div>
+        <div class={statusContentClass}>
+            <p>{statusMessage}</p>
+        </div>    
+    </div>
+</template>

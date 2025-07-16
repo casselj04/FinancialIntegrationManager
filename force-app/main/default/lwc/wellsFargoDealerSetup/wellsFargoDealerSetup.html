@@ -1,0 +1,92 @@
+<template>
+    <lightning-card title="Dealers" icon-name="custom:custom19">
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+            </lightning-spinner>
+        </template>
+        
+        <div class="slds-var-m-around_medium">
+
+            <!-- Default/basic -->
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-max-medium-table_stacked-horizontal" aria-label="Example default base table of Opportunities">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Name">Name</div>
+                        </th>
+
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Id">Id</div>
+                        </th>
+
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Contact First Name">Contact First Name</div>
+                        </th>
+
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Contact Last Name">Contact Last Name</div>
+                        </th>
+
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Contact Email">Contact Email</div>
+                        </th>
+
+                        <th class="" scope="col" style="width:3.25rem">
+                            <div class="slds-truncate slds-assistive-text" title="Actions">Actions</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <template for:each={dealers} for:item="dealer" for:index="index">
+                        <tr class="slds-hint-parent" key={dealer.Id}>
+                            <td data-label="Name" >
+                                <lightning-input variant="label-hidden" data-index={index} value={dealer.Name} message-when-value-missing="Did you forget to enter Dealer Name?" name="Name" onchange={changeHandler} type="text" required="true" ></lightning-input>
+                            </td>
+    
+                            <td data-label="Dealer Id">
+                                <lightning-input variant="label-hidden" data-index={index} value={dealer.TSGCFG__Dealer_Id__c} message-when-value-missing="Did you forget to enter Dealer Id?" name="TSGCFG__Dealer_Id__c" onchange={changeHandler} type="text" required="true" ></lightning-input>
+                            </td>
+    
+                            <td data-label="Contact First Name">                                
+                                <lightning-input variant="label-hidden" data-index={index} value={dealer.TSGCFG__Contact_First_Name__c} message-when-value-missing="Did you forget to enter Contact First Name?" name="TSGCFG__Contact_First_Name__c" onchange={changeHandler} type="text" required="true" ></lightning-input>
+                            </td>
+    
+                            <td data-label="Contact Last Name">
+                                <lightning-input variant="label-hidden" data-index={index} value={dealer.TSGCFG__Contact_Last_Name__c} message-when-value-missing="Did you forget to enter Contact Last Name?" name="TSGCFG__Contact_Last_Name__c" onchange={changeHandler} type="text" required="true" ></lightning-input>
+                            </td>
+    
+                            <td data-label="Contact Email">
+                                <lightning-input variant="label-hidden" data-index={index} value={dealer.TSGCFG__Contact_Email__c} message-when-value-missing="Did you forget to enter Contact Email?" name="TSGCFG__Contact_Email__c" onchange={changeHandler} onblur={validateEmail} type="email" required="true"></lightning-input>
+                            </td>
+
+                            <td data-label="Action">
+                                <lightning-button-icon data-id={dealer.Id} data-index={index} icon-name="utility:delete" onclick={deleteDealer} variant="bare" alternative-text="Delete" class="slds-var-m-left_xx-small" title="Delete"></lightning-button-icon>
+                            </td>
+                        </tr>
+
+                    </template>
+                </tbody>
+            </table>
+
+         <!-- <template for:each={dealers} for:item="dealer" for:index="index">
+               <p key={dealer.Id}>
+                   {index}=={dealer.Name}
+                   <lightning-input data-index={index} ind={index} label="Name" value={dealer.Name} message-when-value-missing="Did you forget to enter Dealer Name?" name="Name" onchange={changeHandler} type="text" required="true"></lightning-input>
+                   {dealer.TSGCFG__Dealer_ID__c}
+                   {dealer.TSGCFG__Contact_First_Name__c}
+                   {dealer.TSGCFG__Contact_Last_Name__c}
+                   {dealer.TSGCFG__Contact_Email__c}
+               </p>
+
+
+            </template>-->
+
+            <div class="slds-var-m-around_medium">
+                <!-- Brand variant: Identifies the primary action in a group of buttons -->
+                <lightning-button variant="brand" label="Add" onclick={addDealer} icon-name="utility:add" class="slds-var-m-left_x-small"></lightning-button>
+                <lightning-button variant="brand" label="Save" title="Primary action" onclick={validateData} class="slds-var-m-left_x-small"></lightning-button>
+            </div>
+        </div>
+    </lightning-card>
+</template>

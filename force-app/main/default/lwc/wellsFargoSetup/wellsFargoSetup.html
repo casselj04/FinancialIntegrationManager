@@ -1,0 +1,38 @@
+<template>
+  <lightning-card title="Wells Fargo Setup" icon-name="custom:custom19">
+    <lightning-layout multiple-rows>  
+      <lightning-layout-item padding="around-small" size="12" large-device-size="6" medium-device-size="6" small-device-size="12">
+        <fieldset class="slds-box slds-theme_default">
+          <c-wells-fargo-scheduler-setup></c-wells-fargo-scheduler-setup>
+        </fieldset>
+      </lightning-layout-item>
+
+      <lightning-layout-item padding="around-small" size="12" large-device-size="6" medium-device-size="6" small-device-size="12">
+        <fieldset class="slds-box slds-theme_default">
+          <c-wells-fargo-api-setup></c-wells-fargo-api-setup>
+        </fieldset>
+      </lightning-layout-item>
+
+      <!--Intructions-->
+      <lightning-layout-item padding="around-small" size="12">
+        <fieldset class="slds-box slds-theme_default">
+        <h3 style="font-weight:bold;">Instructions</h3>
+        <div class="slds-p-horizontal_small">
+          <ol class="slds-list--dotted slds-has-dividers--bottom">
+            <li>CA Signed certificated has to added in customer's org. Copy Same certificate name in to 'Signed Certificate Name' above settings.</li>
+            <li>'WF Application' action button is created on Deal so it has to be added on page layout when you want to allow submit application.</li>
+            <li>On User object, field is created 'Wells Fargo Dealer ID' to defeault Dealer Id for spefici User. You need to add unique ID value on User.</li>
+          </ol>
+        </div>
+      </fieldset>
+    </lightning-layout-item>
+
+      <lightning-layout-item padding="around-small" size="12">
+        <fieldset class="slds-box slds-theme_default">
+          <c-wells-fargo-dealer-setup></c-wells-fargo-dealer-setup>
+        </fieldset>
+      </lightning-layout-item>
+    </lightning-layout>
+
+</lightning-card>
+</template>

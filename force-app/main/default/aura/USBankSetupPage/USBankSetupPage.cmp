@@ -1,0 +1,615 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,force:lightningQuickAction"
+                controller="USBankController"
+                access="global" >
+    
+    <aura:attribute name="loadedSpin" type="Boolean" default="false" /> 
+    <aura:attribute name="Configuration" type="Object"/>
+    <aura:attribute name="CustomSettingList" type="List"/> 
+    <aura:attribute name="ClientToRemove" type="List" default="[]"/>
+    <aura:attribute name="SchedulerTime" type="DateTime" />
+    <aura:attribute name="USBankSyncTimeZone" type="string" />
+
+    <aura:attribute name="LeaseSchedulerTime" type="DateTime" />
+    <aura:attribute name="USBankLeaseSyncTimeZone" type="string" />
+    <aura:attribute name="selectedValue" type="String"/>
+     <aura:attribute name="loaded" type="Boolean" default="false" />
+    <aura:attribute name="isUSBankStatusSync" type="boolean" default="false" />
+    <aura:attribute name="isUSBankLeaseDataSync" type="boolean" default="false" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="hideTabledetails" type="Object"/>
+    <div class="slds-box slds-theme_default">
+        <!-- PAGE HEADER -->
+        <lightning:layout class="slds-page-header slds-page-header_object-home">
+            <lightning:layoutItem>
+                <lightning:icon iconName="standard:scan_card" alternativeText="US Bank Configuration"/>
+            </lightning:layoutItem>
+            <lightning:layoutItem padding="horizontal-small">
+                <div class="page-section page-header">
+                    <h1 class="slds-text-heading_label">US Bank</h1>
+                    <h2 class="slds-text-heading_medium">Configuration</h2>
+                </div>
+            </lightning:layoutItem>
+        </lightning:layout>
+        <!-- / PAGE HEADER -->
+        
+
+        
+        <lightning:card>
+            <div style="padding:10px">
+                <!--aura:set attribute="actions">
+                <lightning:button label="New"/>
+            </aura:set-->
+                <div class="slds-section slds-is-open">
+                    <h3 class="slds-section__title slds-theme_shade">
+                        <span class="slds-truncate slds-p-horizontal_small" title="Section Title">Configurations</span>
+                    </h3>
+                    <div aria-hidden="false" class="slds-section__content">
+                        <div class="slds-form__row slds-align_absolute-center">
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_horizontal slds-is-editing">
+                                    <label class="slds-form-element__label" >Client Id</label>
+                                    <lightning:helptext iconName="utility:info" class="customIcon" content="This will passed in each request and get it from US Bank." />
+                                    <div class="slds-form-element__control slds-size_1-of-1" >
+                                        <lightning:input value="{!v.Configuration.TSGCFG__Client_Id__c}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_horizontal slds-is-editing">
+                                    <label class="slds-form-element__label" >Endpoint</label>
+                                    <lightning:helptext iconName="utility:info" class="customIcon" content="US Bank API Endpoint." />
+                                    <div class="slds-form-element__control slds-size_1-of-1" >
+                                        <lightning:input value="{!v.Configuration.TSGCFG__EndPoint__c}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="slds-form__row slds-align_absolute-center">
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_horizontal slds-is-editing">
+                                    <label class="slds-form-element__label" >User Name</label>
+                                    <lightning:helptext iconName="utility:info" class="customIcon" content="This is used to generate access token and get it from US Bank." />
+                                    <div class="slds-form-element__control slds-size_1-of-1" >
+                                        <lightning:input value="{!v.Configuration.TSGCFG__User_Name__c}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_horizontal slds-is-editing">
+                                    <label class="slds-form-element__label" >Password</label>
+                                     <lightning:helptext iconName="utility:info" class="customIcon" content="This is used to generate access token and get it from US Bank" />
+                                    <div class="slds-form-element__control slds-size_1-of-1" >
+                                        <lightning:input value="{!v.Configuration.TSGCFG__Password__c}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="slds-form__row slds-align_absolute-center">
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_horizontal slds-is-editing">
+                                    <label class="slds-form-element__label" >Tax Id</label>
+                                    <lightning:helptext iconName="utility:info" class="customIcon" content="Enter Field API from Deal object, which will pass in Fed Tax Id." />
+                                    <div class="slds-form-element__control slds-size_1-of-1" >
+                                        <lightning:input value="{!v.Configuration.TSGCFG__Tax_ID__c}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_horizontal slds-is-editing">
+                                    <label class="slds-form-element__label" >Lease Application Endpoint</label>
+                                    <lightning:helptext iconName="utility:info" class="customIcon" content="US Bank Authentication Endpoint." />
+                                    <div class="slds-form-element__control slds-size_1-of-1" >
+                                        <lightning:input value="{!v.Configuration.TSGCFG__Lease_Application_Endpoint__c}"/>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+
+                        <div class="slds-form__row slds-align_absolute-center">
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_horizontal slds-is-editing">
+                                    <label class="slds-form-element__label" >Lease Application XML EndPoint</label>
+                                    <lightning:helptext iconName="utility:info" class="customIcon" content="US Bank Lease Application XML EndPoint." />
+                                    <div class="slds-form-element__control slds-size_1-of-1" >
+                                        <lightning:input value="{!v.Configuration.TSGCFG__Lease_Application_XML_EndPoint__c}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_horizontal slds-is-editing">
+                                    <label class="slds-form-element__label" >Lease Credit Decision Endpoint</label>
+                                    <lightning:helptext iconName="utility:info" class="customIcon" content="US Bank Lease Credit Decision Endpoint." />
+                                    <div class="slds-form-element__control slds-size_1-of-1" >
+                                        <lightning:input value="{!v.Configuration.TSGCFG__Lease_Credit_Decision_Endpoint__c}"/>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        
+                       <div class="slds-form__row slds-align_absolute-center">
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_horizontal slds-is-editing">
+                                    <label class="slds-form-element__label" >Buyout Quote/Lease Service Web Service EndPoint</label>
+                                    <lightning:helptext iconName="utility:info" class="customIcon" content="Buyout Quote/Lease Service Web Service EndPoint." />
+                                    <div class="slds-form-element__control slds-size_1-of-1" >
+                                        <lightning:input value="{!v.Configuration.TSGCFG__Lease_Credit_App_Service_endpoint__c}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_horizontal slds-is-editing">
+                                    <label class="slds-form-element__label" >Duration to request GetBuyoutQuote</label>
+                                    <lightning:helptext iconName="utility:info" class="customIcon" content="After submitting the SubmitBuyoutQuote request, please include Time in minutes to the GetBuyoutQuote request. If null, we are adopting two minutes as the default value" />
+                                    <div class="slds-form-element__control slds-size_1-of-1" >
+                                        <lightning:input type="number" value="{!v.Configuration.TSGCFG__Duration_to_request_GetBuyoutQuote__c}"/>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                           
+                        </div>
+                        <div class="slds-form__row slds-align_absolute-center">
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_horizontal slds-is-editing">
+                                    <label class="slds-form-element__label" >BuyOut Lease Id</label>
+                                    <lightning:helptext iconName="utility:info" class="customIcon" content="Lease ID# (TSGADX__Lease_ID__c) is the field that we use by default when submitting a SubmitBuyoutQuote request. In order to add a new field to a request for SubmitBuyoutQuote, you must specify the api name of that new field of Agreement object. " />
+                                    <div class="slds-form-element__control slds-size_1-of-1" >
+                                        <lightning:input value="{!v.Configuration.TSGCFG__BuyOut_Lease_Id__c}"/>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_horizontal slds-is-editing">
+                                    <label class="slds-form-element__label" >US Bank - Business Name</label>
+                                    <lightning:helptext iconName="utility:info" class="customIcon" content="The name of the US Business/Account record is used to identify the US business as a Leasing Company in the Agreement (TSGADX__Agreements__c). If this value is not specified, the default name, 'US Bank,' will be used."/>
+                                    <div class="slds-form-element__control slds-size_1-of-1" >
+                                        <lightning:input value="{!v.Configuration.TSGCFG__Business_Name__c}"/>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                         </div>
+
+                         <div class="slds-form__row slds-align_absolute-center">
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_horizontal slds-is-editing">
+                                    <label class="slds-form-element__label" >Buyout Quote Month-End Threshold Day</label>
+                                    <lightning:helptext iconName="utility:info" class="customIcon" content="Day of the month after which buyout quotes are valid through the end of the following month. If the request is made on or after this day, extend the validity to the end of the next month; otherwise, it's valid through the end of the current month. " />
+                                    <div class="slds-form-element__control slds-size_1-of-1" >
+                                        <lightning:input value="{!v.Configuration.TSGCFG__Buyout_Quote_Month_End_Threshold_Day__c}"/>
+                                    </div>
+                                </div>
+
+                                
+                                
+                            </div>
+
+                            <div class="slds-form__item" role="listitem"></div>
+                         </div>
+
+                        <div class="slds-align_absolute-center" style="margin-top:10px;">
+                            <lightning:button variant="brand" label="Save" title="Brand action" onclick="{!c.SaveSetting}" />
+                            <lightning:button variant="brand" label="Authenticate" title="Brand action" onclick="{!c.doAPICallout}" />
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="slds-section slds-is-open">
+                    <h3 class="slds-section__title slds-theme_shade">
+                        <span class="slds-truncate slds-p-horizontal_small" title="Section Title">Sync US Bank Applications</span>
+                    </h3>
+                    <div aria-hidden="false" class="slds-section__content">
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-size_6-of-12">
+                                <div style="margin-top:10px;margin-bottom:10px;">
+                                    <b>Notes :</b>
+                                    <ul style="list-style:initial;margin-left:25px;">
+                                        <li>
+                                            <i>
+                                                This is used to Schedule a Batch to update US Bank's Application Status.
+                                            </i>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div style="margin-left: 24px;">
+                                     <aura:if isTrue="{!v.isUSBankStatusSync}">
+                                        <span ><b>Next Scheduled Run: </b>
+                                            <lightning:formattedDateTime value="{!v.SchedulerTime}" timeZone="{!v.USBankSyncTimeZone}" 
+                                                                         year="numeric" month="short" day="2-digit" hour="2-digit" minute="2-digit" second="2-digit"/>
+                                        </span>
+                                    </aura:if>
+                                    <div class="slds-form-element__control slds-size_1-of-3" style="margin-top: 5px;">
+                                    <lightning:select value="{!v.selectedValue}" aura:id="select" name="select" label=" Update US Bank Status Scheduler (Runs every XX Mins)">
+                                        <option value="">--None--</option>
+                                        <option value="10">10 Min</option>
+                                        <option value="20">20 Min</option>
+                                        <option value="30">30 Min</option>
+                                        <option value="40">40 Min</option>
+                                        <option value="50">50 Min</option>
+                                        <option value="1-Hour">1 Hour</option>
+                                    </lightning:select>
+                                    </div>
+                                    <lightning:button label="Create Scheduler" 
+                                                      class="slds-m-top_medium"
+                                                      variant="brand"
+                                                      onclick="{!c.schedulerUSBank}" />
+                                    <!--label class="slds-form-element__label">
+                                        Update US Bank Status Scheduler (Runs Everyday) 
+                                    </label>
+                                    <aura:if isTrue="{!v.isUSBankStatusSync}">
+                                        <span ><b>Next Scheduled Run: </b>
+                                            <lightning:formattedDateTime value="{!v.SchedulerTime}" timeZone="{!v.USBankSyncTimeZone}" 
+                                                                         year="numeric" month="short" day="2-digit" hour="2-digit" minute="2-digit" second="2-digit"/>
+                                        </span>
+                                    </aura:if>
+                                    <div class="slds-form-element__control slds-size_1-of-3">
+                                        <lightning:input type="time" variant="label-hidden"
+                                                         name="USBankStatusScheduler" 
+                                                         aura:id="schedulerUSBankStatus" 
+                                                         label="Application Status Batch Scheduler (Runs Everyday) " />
+                                    </div>
+                                    <lightning:button label="Create Scheduler" 
+                                                      class="slds-m-top_medium"
+                                                      variant="brand"
+                                                      onclick="{!c.schedulerUSBank}" /-->
+                                </div>
+                                
+                            </div>
+                            
+                            <div class="slds-col slds-size_6-of-12">
+                                <div style="margin-top:10px;margin-bottom:10px;">
+                                    <b>Notes :</b>
+                                    <ul style="list-style:initial;margin-left:25px;">
+                                        <li>
+                                            <i>
+                                                This is used to Update Application Status.
+                                            </i>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div style="margin-left: 24px;">
+                                    <lightning:button variant="brand" label="Run Batch to Update Credit Status" title="Brand action" onclick="{!c.runBatchToUpdateCreditStatus}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!--Add spinner -->
+                
+                
+                <!--loading spinner start-->
+                <aura:if isTrue="{!v.loadedSpin}">
+                    <div aura:id="spinnerId" class="slds-spinner_container">
+                        <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                            <span class="slds-assistive-text">Processing...</span>
+                            <div class="slds-spinner__dot-a"></div>
+                            <div class="slds-spinner__dot-b"></div>
+                        </div>
+                    </div>
+                </aura:if>
+                <!-- Loading spinner end-->
+                
+                 <div class="slds-section slds-is-open">
+                    <h3 class="slds-section__title slds-theme_shade">
+                        <span class="slds-truncate slds-p-horizontal_small" title="Section Title">Sync Lease Data</span>
+                    </h3>
+                    <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-size_6-of-12">
+                                <div style="margin-top:10px;margin-bottom:10px;">
+                                    <b>Notes :</b>
+                                    <ul style="list-style:initial;margin-left:25px;">
+                                        <li>
+                                            <i>
+                                                This is used to Update Lease Data.
+                                            </i>
+                                        </li>
+                                    </ul>
+                                </div>
+                                
+                                <div style="margin-left: 24px;">
+                                    <lightning:button variant="brand" label="Run Batch to Update Lease Data" title="Run Batch to Update Lease Data" onclick="{!c.runBatchToUpdateLeaseData}" />
+                                </div>
+                                
+                    
+       
+                            </div>
+
+                            
+                            <div class="slds-col slds-size_6-of-12">
+                            <aura:if isTrue="{!v.isUSBankLeaseDataSync}">
+                                        <span ><b>Next Scheduled Run: </b>
+                                            <lightning:formattedDateTime value="{!v.LeaseSchedulerTime}" timeZone="{!v.USBankLeaseSyncTimeZone}" 
+                                                                         year="numeric" month="short" day="2-digit" hour="2-digit" minute="2-digit" second="2-digit"/>
+                                        </span>
+                                    </aura:if>
+                                <div class="slds-form-element__control slds-size_1-of-3 slds-m-around_xx-small">
+                                    
+                                    <lightning:input type="time" name="LeaseData" aura:id="LeaseDataTime" 
+                                        label="Lease Data (Runs Everyday)"/>
+                                        <lightning:button label="Create Lease Data Scheduler" 
+                                    class="slds-m-top_medium"
+                                    variant="brand"
+                                    onclick="{!c.schedulerLeaseData}" />
+                                </div>
+                                </div>
+                                </div>
+                                <lightning:card>
+                                    <lightning:layout>
+                                        <lightning:layoutItem size="12">
+                                            <lightning:accordion  allowMultipleSectionsOpen="true">
+                                              
+                                             
+                            <lightning:accordionSection name="API Mapping Details" label="API Mapping Details" class="accordionSection">
+                                <aura:set attribute="body">
+                                    <ul class="slds-list_dotted">
+                                         <table>
+                                                      
+                                                    <table class="slds-table slds-table_cell-buffer slds-table_bordered" style="text-align:center" width="100%">
+                                                        
+                                                        
+                                                        <tr class="slds-line-height_reset slds-text-title_caps " ><td class="slds-text-heading--small" style="border: 1px solid #000;text-align:center"  colspan="2" align="center"><b>Business</b></td></tr>
+                                                        <tr class="slds-line-height_reset slds-text-title_caps" ><td style="border: 1px solid #000;text-align:center" align="center"><b>Salesforce Fields</b></td><td style="border: 1px solid #000;text-align:center" align="center"><b>Call Out Response</b></td></tr>
+                                                        <tr class="slds-line-height_reset slds-text-title_caps"><td style="border: 1px solid #000;text-align:center">Name (<b>Name</b>)</td><td style="border: 1px solid #000;text-align:center">CustName</td></tr>
+                                                        <tr class="slds-line-height_reset slds-text-title_caps"><td style="border: 1px solid #000;text-align:center">Account Number (<b>AccountNumber</b>)</td><td style="border: 1px solid #000;text-align:center">CustNumber</td></tr>
+                                                        <tr class="slds-line-height_reset slds-text-title_caps"><td style="border: 1px solid #000;text-align:center">Phone (<b>Phone</b>)</td><td style="border: 1px solid #000;text-align:center">CustPhone</td></tr>
+                                                        
+                                                         <tr class="slds-line-height_reset slds-text-title_caps" ><td class="slds-text-heading--small" style="border: 1px solid #000;text-align:center" colspan="2"><b>Agreement</b></td></tr>
+                                                        <tr class="slds-line-height_reset slds-text-title_caps" ><td style="border: 1px solid #000;text-align:center"><b>Salesforce Fields</b></td><td style="border: 1px solid #000;text-align:center"><b>Call Out Response</b></td></tr>
+                                                        <tr class="slds-line-height_reset slds-text-title_caps"><td style="border: 1px solid #000;text-align:center">Lease Id# (<b>TSGADX__Lease_ID__c</b>)</td><td style="border: 1px solid #000;text-align:center">ILAgrNum</td></tr>
+                                                        <tr class="slds-line-height_reset slds-text-title_caps"><td style="border: 1px solid #000;text-align:center">Lease Term (<b>TSGADX__Lease_Term__c</b>)</td><td style="border: 1px solid #000;text-align:center">LeaseTerm</td></tr>
+                                                        <tr class="slds-line-height_reset slds-text-title_caps"><td style="border: 1px solid #000;text-align:center">Lease Start Date (<b>TSGCFG__Lease_Start_Date__c</b>)</td><td style="border: 1px solid #000;text-align:center">LeaseStartDate</td></tr>
+                                                        <tr class="slds-line-height_reset slds-text-title_caps"><td style="border: 1px solid #000;text-align:center">Lease Exp Date (<b>TSGADX__Lease_Exp_Date__c</b>)</td><td style="border: 1px solid #000;text-align:center">LeaseEndDate</td></tr>
+                                                        <tr class="slds-line-height_reset slds-text-title_caps"><td style="border: 1px solid #000;text-align:center">Last Payment Date (<b>TSGCFG__Last_Payment_Date__c</b>)</td><td style="border: 1px solid #000;text-align:center">LastPmtDate</td></tr>
+                                                        <tr class="slds-line-height_reset slds-text-title_caps"><td style="border: 1px solid #000;text-align:center">Remaining Payments (<b>TSGCFG__Remaining_Payments__c</b>)</td><td style="border: 1px solid #000;text-align:center">PaymentsRemaining</td></tr>
+                                                        <tr class="slds-line-height_reset slds-text-title_caps"><td style="border: 1px solid #000;text-align:center">Total Equipment Payment (<b>TSGCFG__Total_Equipment_Payment__c</b>)</td><td style="border: 1px solid #000;text-align:center">TotalEquipmentPayment</td></tr>
+                                                        <tr class="slds-line-height_reset slds-text-title_caps"><td style="border: 1px solid #000;text-align:center">Lease Payment (<b>TSGCFG__Lease_Payment__c</b>)</td><td style="border: 1px solid #000;text-align:center">TotalLeasePayment</td></tr>
+                                                        <tr class="slds-line-height_reset slds-text-title_caps"><td style="border: 1px solid #000;text-align:center">Total Service Base Payment (<b>TSGCFG__Total_Service_Base_Payment__c</b>)</td><td style="border: 1px solid #000;text-align:center">TotalServiceBasePayment</td></tr>
+                                                        <tr class="slds-line-height_reset slds-text-title_caps"><td style="border: 1px solid #000;text-align:center">Excess Billed Last Period (<b>TSGCFG__Excess_Billed_Last_Period__c</b>)</td><td style="border: 1px solid #000;text-align:center">ExcessBilledLastPeriod</td></tr>
+                                                        <tr class="slds-line-height_reset slds-text-title_caps"><td style="border: 1px solid #000;text-align:center">Pass Through Charges (<b>TSGCFG__Pass_Through_Charges__c</b>)</td><td style="border: 1px solid #000;text-align:center">PassThroughCharges</td></tr>
+                                                        <tr class="slds-line-height_reset slds-text-title_caps"><td style="border: 1px solid #000;text-align:center">Other Charges (<b>TSGCFG__Other_Charges__c</b>)</td><td style="border: 1px solid #000;text-align:center">OtherCharges</td></tr>
+                                                        
+                                                        <tr class="slds-line-height_reset slds-text-title_caps " ><td class="slds-text-heading--small" style="border: 1px solid #000;text-align:center"  colspan="2" align="center"><b>Agreement Detail</b></td></tr>
+                                                        <tr class="slds-line-height_reset slds-text-title_caps" ><td style="border: 1px solid #000;text-align:center" align="center"><b>Salesforce Fields</b></td><td style="border: 1px solid #000;text-align:center" align="center"><b>US Bank Fields</b></td></tr>
+                                                        <tr class="slds-line-height_reset slds-text-title_caps"><td style="border: 1px solid #000;text-align:center">Lease Financed Amount (<b>TSGCFG__Lease_Financed_Amount__c</b>)</td><td style="border: 1px solid #000;text-align:center">AssetOrigCost</td></tr>
+                                                        
+                                                        <tr class="slds-line-height_reset slds-text-title_caps" ><td class="slds-text-heading--small" style="border: 1px solid #000;text-align:center" colspan="2"><b>Equipment</b></td></tr>
+                                                        <tr class="slds-line-height_reset slds-text-title_caps" ><td style="border: 1px solid #000;text-align:center"><b>Salesforce Fields (<b></b>)</b></td><td style="border: 1px solid #000;text-align:center"><b>Call Out Response</b></td></tr>
+                                                        <tr class="slds-line-height_reset slds-text-title_caps"><td style="border: 1px solid #000;text-align:center">Serial Number (<b>TSGADX__Serial_Number__c</b>)</td><td style="border: 1px solid #000;text-align:center">AssetSerNum</td></tr>
+                                                        <tr class="slds-line-height_reset slds-text-title_caps"><td style="border: 1px solid #000;text-align:center">Asset Id (US Bank) (<b>TSGCFG__Asset_Id_US_Bank__c</b>)</td><td style="border: 1px solid #000;text-align:center">AssetId</td></tr>
+                                                        <tr class="slds-line-height_reset slds-text-title_caps"><td style="border: 1px solid #000;text-align:center">Asset Pool Id (US Bank) (<b>TSGCFG__Asset_Pool_Id_US_Bank__c</b>)</td><td style="border: 1px solid #000;text-align:center">AssetPoolId</td></tr>
+                                                        <tr class="slds-line-height_reset slds-text-title_caps"><td style="border: 1px solid #000;text-align:center">Model (<b>TSGADX__Model__c</b>)</td><td style="border: 1px solid #000;text-align:center">AssetMdlNum</td></tr>
+                                                        <tr class="slds-line-height_reset slds-text-title_caps"><td style="border: 1px solid #000;text-align:center">Make (<b>TSGADX__Make__c</b>)</td><td style="border: 1px solid #000;text-align:center">AssetBrndNm</td></tr>
+                                                        <tr class="slds-line-height_reset slds-text-title_caps"><td style="border: 1px solid #000;text-align:center">Asset Service Only (<b>TSGCFG__Asset_Service_Only__c</b>)</td><td style="border: 1px solid #000;text-align:center">AssetServiceOnly</td></tr>
+                                                        <tr class="slds-line-height_reset slds-text-title_caps"><td style="border: 1px solid #000;text-align:center">Asset Tax Charges (<b>TSGCFG__Asset_Tax_Charges__c</b>)</td><td style="border: 1px solid #000;text-align:center">AssetTaxCharges</td></tr>
+                                                        <tr class="slds-line-height_reset slds-text-title_caps"><td style="border: 1px solid #000;text-align:center">Monthly Payment (<b>TSGADX__Monthly_Payment__c</b>)</td><td style="border: 1px solid #000;text-align:center">AssetEquipPmnt</td></tr>
+                                                    <!--    <tr class="slds-line-height_reset slds-text-title_caps"><td style="border: 1px solid #000;text-align:center">Lease Amount$ (<b>TSGADX__Lease_Amount__c</b>)</td><td style="border: 1px solid #000;text-align:center">AssetOrigCost</td></tr> -->
+                                                       <tr class="slds-line-height_reset slds-text-title_caps"><td style="border: 1px solid #000;text-align:center">Asset Tax Exemption Status (<b>TSGCFG__Asset_Tax_Exemption_Status__c</b>)</td><td style="border: 1px solid #000;text-align:center">AssetTaxExemptStatus</td></tr>
+                                                        <tr class="slds-line-height_reset slds-text-title_caps"><td style="border: 1px solid #000;text-align:center">Asset sales tax included in payment (<b>TSGCFG__Asset_sales_tax_included_in_payment__c</b>)</td><td style="border: 1px solid #000;text-align:center">AssetSalesTaxIncldInPmt</td></tr>
+                                                    </table>
+                                                    
+                                               
+                                                
+                                            </table>
+                                    </ul>
+                                </aura:set>
+                            </lightning:accordionSection>
+                        </lightning:accordion>
+                                            
+                                           
+                                        </lightning:layoutItem>
+                                    </lightning:layout>
+                    
+                    </lightning:card>
+                    
+                        </div>
+                
+                <div class="slds-section slds-is-open">
+                   <!-- <h3 class="slds-section__title slds-theme_shade">
+                        <span class="slds-truncate slds-p-horizontal_small" title="Section Title">Submit BuyOut</span>
+                    </h3>
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="margin-top:10px;margin-bottom:10px;">
+                            <b>Notes :</b>
+                            <ul style="list-style:initial;margin-left:25px;">
+                                <li>
+                                    <i>
+                                        Use this to submit a BuyOut for an agreement.
+                                    </i>
+                                </li>
+                            </ul>
+                        </div>
+                        <div style="margin-left: 24px;" class="slds-p-around-medium"> -->
+                            <!--used for submit buyout quote for agreement-->
+                           <!-- <lightning:button variant="brand" label="Run Batch to Submit BuyOut Quote" title="Brand action" onclick="{!c.runBatchToSubmitBOdata}" />
+                        </div>
+                    </div>-->
+                    
+                    <h3 class="slds-section__title slds-theme_shade">
+                        <span class="slds-truncate slds-p-horizontal_small" title="Submit BuyOut Quote PDF Configurations">Submit BuyOut Quote PDF Configurations</span>
+                    </h3>
+                    
+                    <div aria-hidden="false" class="slds-section__content">
+                        <!--<div class="c-container">
+                            <lightning:layout verticalAlign="center">
+                                <lightning:layoutItem flexibility="auto" padding="around-small" size="6">
+                                    <div class="slds-form-element slds-form-element_horizontal slds-is-editing">
+                                    <label class="slds-form-element__label" >Rep Can Change PDF Configurations</label>
+                                    <lightning:helptext iconName="utility:info" class="customIcon" content="If Checked, then the rep. can choose PDF Configuration while submitting BuyOut Quote." />
+                                    <div class="slds-form-element__control slds-size_1-of-1" >
+                                        <lightning:input type="checkbox" label="" name="" checked="{!v.Configuration.TSGCFG__Rep_Can_Change_PDF_Configurations__c}"/>
+                                    </div>
+                                    
+                                </div>
+                                </lightning:layoutItem>
+                            </lightning:layout>
+                        </div>-->
+                        <div class="slds-form__row slds-align_absolute-center">
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_horizontal slds-is-editing">
+                                    <label class="slds-form-element__label" >Hide Customer Buyout</label>
+                                    <lightning:helptext iconName="utility:info" class="customIcon" content="Hide Customer Buyout for Rep. While Submitting BuyOut Quote." />
+                                    <div class="slds-form-element__control slds-size_1-of-1" >
+                                        <lightning:input type="checkbox" label="" name="" checked="{!v.Configuration.TSGCFG__Hide_Customer_Buyout__c}"/>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_horizontal slds-is-editing">
+                                    <label class="slds-form-element__label" >Hide Customer Buyout to Return</label>
+                                    <lightning:helptext iconName="utility:info" class="customIcon" content="Hide Customer Buyout to Return for Rep. While Submitting BuyOut Quote." />
+                                    <div class="slds-form-element__control slds-size_1-of-1" >
+                                        <lightning:input type="checkbox" label="" name=""  checked="{!v.Configuration.TSGCFG__Hide_Customer_Buyout_to_Return__c}"/>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-form__row slds-align_absolute-center">
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_horizontal slds-is-editing">
+                                    <label class="slds-form-element__label" >Hide Client Buyout</label>
+                                    <lightning:helptext iconName="utility:info" class="customIcon" content="Hide Client Buyout for Rep. While Submitting BuyOut Quote." />
+                                    <div class="slds-form-element__control slds-size_1-of-1" >
+                                        <lightning:input type="checkbox" label="" name=""  checked="{!v.Configuration.TSGCFG__Hide_Client_Buyout__c}"/>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_horizontal slds-is-editing">
+                                    <label class="slds-form-element__label" >Hide Client Buyout to Return</label>
+                                    <lightning:helptext iconName="utility:info" class="customIcon" content="Hide Client Buyout to Return for Rep. While Submitting BuyOut Quote." />
+                                    <div class="slds-form-element__control slds-size_1-of-1" >
+                                        <lightning:input type="checkbox" label="" name=""  checked="{!v.Configuration.TSGCFG__Hide_Client_Buyout_to_Return__c}"/>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-form__row slds-align_absolute-center">
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_horizontal slds-is-editing">
+                                    <label class="slds-form-element__label" >Hide Trade-Up</label>
+                                    <lightning:helptext iconName="utility:info" class="customIcon" content="Hide Trade-Up for Rep. While Submitting BuyOut Quote." />
+                                    <div class="slds-form-element__control slds-size_1-of-1" >
+                                        <lightning:input type="checkbox" label="" name=""  checked="{!v.Configuration.TSGCFG__Hide_Trade_Up__c}"/>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_horizontal slds-is-editing">
+                                    <label class="slds-form-element__label" >Hide Trade-Up To Return</label>
+                                    <lightning:helptext iconName="utility:info" class="customIcon" content="Hide Trade-Up To Return for Rep. While Submitting BuyOut Quote." />
+                                    <div class="slds-form-element__control slds-size_1-of-1" >
+                                        <lightning:input type="checkbox" label="" name=""  checked="{!v.Configuration.TSGCFG__Hide_Trade_up_To_Return__c}"/>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="slds-form__row slds-align_absolute-center">
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_horizontal slds-is-editing">
+                                    <label class="slds-form-element__label" >Hide Invoice Email</label>
+                                    <lightning:helptext iconName="utility:info" class="customIcon" content="If not checked, you can give an email address to get the most recent three copies of the customer invoice when submitting the Buyout Quote." />
+                                    <div class="slds-form-element__control slds-size_1-of-1" >
+                                        <lightning:input type="checkbox" label="" name=""  checked="{!v.Configuration.TSGCFG__Hide_Invoice_Email__c}"/>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <div class="slds-form__item" role="listitem">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="slds-align_absolute-center" style="margin-top:10px;">
+                        <lightning:button variant="brand" label="Save PDF Configurations" title="Save PDF Configurations" onclick="{!c.SaveSetting}" />
+                    </div>
+                </div>
+                
+                    
+                
+                 <div class="slds-section slds-is-open">
+                    <h3 class="slds-section__title slds-theme_shade">
+                        <span class="slds-truncate slds-p-horizontal_small" title="Section Title"> Client NBR details</span>
+                    </h3>
+                    <div aria-hidden="false" class="slds-section__content">
+                        <div class="slds-m-around--xx-large">
+       
+        <div class="container-fluid">        
+            <table class="slds-table slds-table_bordered slds-table_cell-buffer"> 
+                <thead>
+                    <tr class="slds-text-title_caps">
+                       
+                         <th scope="col">
+                            <div class="slds-truncate" title="Is Default?">Is Default?</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Client ID">Client Id</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Client Name">Client Name</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Relation">Relation</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Action">Action</div>
+                        </th>
+                    </tr>
+                </thead>   
+                <tbody>      
+                    <aura:iteration items="{!v.CustomSettingList}" var="item" indexVar="index">
+                        <tr>
+                          
+                             <td>
+                                <lightning:input type="checkbox"  checked="{!item.TSGCFG__Is_Default__c}" name="{!index}" onclick="{!c.handleCheckbox}"/>
+                            </td>
+                            <td>
+                                <lightning:input name="ClientNBR" value="{!item.TSGCFG__Client_NBR__c}" />
+                            </td>
+                            <td>
+                                <lightning:input name="ClientName" type="text"  value="{!item.TSGCFG__Client_Name__c}" required="true" />
+                            </td>
+                            <td>
+                                <lightning:input name="Realtion" value="{!item.TSGCFG__Relation__c}" />
+                            </td>
+                            <td>
+                                <a onclick="{!c.removeRow}" data-record="{!index}">
+                                    <lightning:icon variant="error" iconName="utility:delete" size="small" alternativeText="Delete"/>
+                                    <span class="slds-assistive-text">Delete</span>
+                                </a>
+                            </td> 
+                        </tr>
+                    </aura:iteration>
+                </tbody>
+            </table>
+            </div>
+             <aura:if isTrue="{! v.loaded }">
+            <div class="slds-align_absolute-center slds-p-top_small">
+                <lightning:button variant="brand" label="Add New" title="Add New" onclick="{!c.addRow}" />
+                <lightning:button variant="brand" label="Save" title="Save" onclick="{!c.saveBranchDetails}" />
+            </div>
+        
+             <aura:set attribute="else">
+                <lightning:spinner alternativeText="Loading" />
+            </aura:set>
+                            </aura:if>
+    </div>
+                     </div>
+                </div>
+            </div>
+        </lightning:card>
+        
+    </div>
+</aura:component>

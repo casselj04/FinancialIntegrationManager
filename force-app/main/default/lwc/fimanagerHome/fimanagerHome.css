@@ -1,0 +1,180 @@
+.custom-tab-container {
+    border-radius: 10px;
+    background-color: #f5faff;
+    padding: 1rem;
+}
+
+.tab-header {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-bottom: 2px solid #ccc;
+}
+
+.tab-item {
+    padding: 10px 20px;
+    margin-right: 10px;
+    border-radius: 8px 8px 0 0;
+    background-color: #e0eafc;
+    cursor: pointer;
+    font-weight: bold;
+    color: #1a3e78;
+}
+
+.tab-item:hover {
+    background-color: #d0e1f9;
+}
+
+.tab-item.active {
+    background-color: #0070d2;  /*salesforce blue*/
+    border-bottom: 2px solid white;
+    color:#e0eafc;
+}
+.disabled {
+    /*pointer-events: none;*/
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+.tab-content {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 0 0 10px 10px;
+}
+
+.refresh-tab-icon{
+    --slds-c-icon-color-foreground-default: #0070d2; /* Salesforce blue */
+    cursor: pointer;
+    position:relative; 
+    float:right; 
+    right:35px; 
+    top:10px;
+}
+.impersonate-icon{
+    cursor: pointer;
+    position:relative; 
+    float:right; 
+    right:125px; 
+    top:10px;
+}
+.icon-button {
+    border: none;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+.hide-icon{
+    display:none;
+}
+.custom-tooltip {
+    position: absolute;
+    background: #f0f8ff; /* Very light blue like the sky */
+    color: #333;
+    padding: 0.3rem 0.6rem ;
+    border-radius: 8px; /* Big round corners for a "puffy" look */
+    border:#0070d2 solid .01rem; 
+    font-size: 14px;
+    font-weight:500;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+    white-space: nowrap;
+    pointer-events: none;
+    transform: translateY(-100%);
+    z-index: 1000;
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+    opacity: 1;
+}
+.fm-header {
+    border-radius: 10px;
+    background-color: #f5faff;
+    color: #16325c;
+    font-weight: 600;
+    font-size: 22px;
+    border-bottom: 1px solid #d8dde6;
+    text-align:center;
+    margin-bottom: 15px;
+    max-height:120px;
+    height:65px;
+    overflow:visible;
+    vertical-align: middle;
+    }
+.scene {
+    width: 150px;
+    height: 150px;
+    margin: auto;
+    perspective: 800px; /* adds the 3D depth */
+}
+
+.orbit-img {
+    width: 176px;
+    height: 176px;
+}
+.fm-header-logos{
+    position:relative;
+    height:60px;
+    width:60px;
+
+}
+.status-bar {
+    position: fixed;
+    bottom: 2.5rem;
+    width: 99%;
+    text-align:center;
+    z-index: 999;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+.status-tab {
+    background-color: #f5faff;
+    color: #1a3e78;
+    font-size: 0.7rem;
+    padding-bottom: 1px;
+    cursor: pointer;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    width: 250px;
+    margin: auto;
+    text-align:center;
+    border-top: 1px solid #0070d2;
+    border-left: 1px solid #0070d2;
+    border-right: 1px solid #0070d2;
+    border-bottom: none;
+    position: relative;
+    z-index: 1000;
+    top: 2px;
+}
+
+.status-content {
+    background-color: #f5faff;
+    color: #1a3e78;
+    height: 0;
+    overflow: hidden;
+    transition: height 0.3s ease;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    width:80%;
+    text-align:center;
+    margin: auto;
+}
+
+.status-content.expanded {
+    height: 30px;
+    padding: 4px 0;
+    text-align:center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-top: 1px solid #0070d2;
+    border-left: 1px solid #0070d2;
+    border-right: 1px solid #0070d2;
+    z-index:999;
+}
+@keyframes blinkArrow {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+.status-tab.blink {
+    animation: blinkArrow 1s ease-in-out infinite;
+}

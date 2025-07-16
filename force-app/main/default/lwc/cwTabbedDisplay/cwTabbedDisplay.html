@@ -1,0 +1,75 @@
+<template>
+    <div class="cw-header">
+        <div>
+
+            <span style="position:relative; top:14px;">AgentDealer Financial Integration Manager</span>
+                <lightning-spinner
+                    if:true={isLoading}
+                    alternative-text="Loading..."
+                    size="large"
+                    variant="brand">
+                </lightning-spinner>
+            
+        </div>
+    </div>
+     <div>
+        <div style="max-height:1px; overflow:visible;">
+            <div style="max-height:1px; overflow:visible;">
+                <button class={getImpersonationIconClass} onclick={impersonateAPIUser} title="Impersonate API User">
+                    <img src={impIconUrl} alt="Impersonate Icon" style="height:32px; width:32px;" />
+                </button>
+                <button class={getImpersonationLogoutIconClass} onclick={triggerImpLogout} title="Discontinue Impersonation">
+                    <img src={impLOIconUrl} alt="Impersonate Icon" style="height:32px; width:32px;" />
+                </button>
+                <lightning-icon 
+                    onclick={refreshActiveTab} 
+                    icon-name="utility:refresh" 
+                    alternative-text="refresh" 
+                    size="medium" 
+                    title="Reload the current tab."
+                    class="refresh-tab-icon">
+                </lightning-icon>
+            </div>
+            
+        </div>
+        <div class="custom-tab-container">
+
+            <ul class="tab-header">
+                <li class={getTabClassStatus} onmouseover={showHomeTooltip} onmouseout={hideTooltip} onclick={handleStatusClick}>ConnectWise Home</li>
+                <li class={getTabClassSystem} onmouseover={showConfTooltip} onmouseout={hideTooltip} onclick={handleSystemClick}>System Configuration</li>
+                <li class={getTabClassSync} onmouseover={showSyncTooltip} onmouseout={hideTooltip} onclick={handleSyncClick}>Manual Sync</li>
+                <li class={getTabClassScheduler} onmouseover={showScheduleTooltip} onmouseout={hideTooltip} onclick={handleSchedulerClick}>Scheduler</li>
+                <li class={getTabClassMapping} onmouseover={showMappingTooltip} onmouseout={hideTooltip} onclick={handleMappingClick}>Mapping</li>
+            
+            </ul>
+
+            <div class="tab-content slds-box">
+                <template if:true={showStatus}>
+                    <c-cw-home-dashboard user-profile={userProfile} cw-integration={cwIntegrationSettings} global-data={globalData} company-data={companyData} onchildstatusupdate={handleStatusUpdate}  onchildupdate={handleChildUpdate} ontoastrequest={handleToastRequest}></c-cw-home-dashboard>
+                </template>
+                <template if:true={showSystem}>
+                    <c-system-configuration cw-integration={cwIntegrationSettings} user-profile={userProfile} cw-impersonator={globalData.originalUserId} ontoastrequest={handleToastRequest}></c-system-configuration>
+
+                </template>
+                <template if:true={showSync}>
+                    <c-manual-sync-lwc global-data={globalData} sync-products={syncProducts} onchildstatusupdate={handleStatusUpdate}  onchildupdate={handleChildUpdate} ontoastrequest={handleToastRequest}></c-manual-sync-lwc>
+                </template>
+                <template if:true={showScheduler}>
+                    <c-scheduler-lwc global-data={globalData} onchildstatusupdate={handleStatusUpdate} onchildupdate={handleChildUpdate} ontoastrequest={handleToastRequest}></c-scheduler-lwc>
+                </template>
+                <template if:true={showMapping}>
+                    <c-bi-directional-mapping onchildstatusupdate={handleStatusUpdate} onchildupdate={handleChildUpdate} ontoastrequest={handleToastRequest}></c-bi-directional-mapping>
+                </template>
+        </div>
+        <template if:true={showTooltip}>
+                <div class="custom-tooltip tooltip-container" style={tooltipStyle} lwc:dom="manual"></div>
+            </template>
+        </div>
+    </div>
+    <div class="status-bar" onmouseover={expandStatus} onmouseout={collapseStatus}>
+        <div class={statusTabClass}>▲</div>
+        <div class={statusContentClass}>
+            <p>{statusMessage}</p>
+        </div>
+    </div>
+</template>

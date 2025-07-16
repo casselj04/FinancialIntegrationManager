@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>WellsFargoAPIController</members>
+        <members>SchedulerWellsFargoSync</members>
+        <members>USBankController</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>fimanagerHome</members>
+        <members>gaIntegration</members>
+        <members>lccIntegration</members>
+        <members>psIntegration</members>
+        <members>usbIntegration</members>
+        <members>dllIntegration</members>
+        <members>wfIntegration</members>
+        <members>wellsFargoSetup</members>
+        <members>wellsFargoApiSetup</members>
+        <members>wellsFargoDealerSetup</members>
+        <members>utilityLWC</members>
+        <members>wellsFargoSchedulerSetup</members>
+        <name>LightningComponentBundle</name>
+    </types>
+    <types>
+        <members>USBankSetupPage</members>
+        <name>AuraDefinitionBundle</name>
+    </types>
+    <version>64.0</version>
+</Package>

@@ -1,0 +1,41 @@
+<template>
+    <lightning-card title="API Settings" icon-name="custom:custom19">
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+            </lightning-spinner>
+        </template>
+        
+        <div class="slds-var-m-around_medium">
+
+            <!-- Default/basic -->
+            <div class="slds-var-p-around_medium lgc-bg">
+                <lightning-input label="Endpoint" value={obj.TSGCFG__Endpoint__c} message-when-value-missing="Did you forget to enter Endpoint?" name="TSGCFG__Endpoint__c" onchange={changeHandler} type="text" required="true" ></lightning-input>
+            </div>
+
+            <div class="slds-var-p-around_medium lgc-bg">
+                <lightning-input label="Partner Reference Id" value={obj.TSGCFG__Partner_Reference_Id__c} message-when-value-missing="Did you forget to enter Partner Reference Id?" name="TSGCFG__Partner_Reference_Id__c" onchange={changeHandler} type="text" required="true"></lightning-input>
+            </div>
+
+            <div class="slds-var-p-around_medium lgc-bg">
+                <lightning-input label="Username" value={obj.TSGCFG__Username__c} message-when-value-missing="Did you forget to enter Username?" name="TSGCFG__Username__c" onchange={changeHandler} type="text" required="true"></lightning-input>
+            </div>
+
+            <div class="slds-var-p-around_medium lgc-bg">
+                <lightning-input label="Password" value={obj.TSGCFG__Password__c} message-when-value-missing="Did you forget to enter Password?" name="TSGCFG__Password__c" onchange={changeHandler} type="text" required="true"></lightning-input>
+            </div>
+
+            <div class="slds-var-p-around_medium lgc-bg">
+                <lightning-input label="Signed Certificate Name" value={obj.TSGCFG__Signed_Certificate_Name__c} message-when-value-missing="Did you forget to enter Signed Certificate Name?" name="TSGCFG__Signed_Certificate_Name__c" onchange={changeHandler} type="text" required="true"></lightning-input>
+            </div>
+            <!--Added on 16-12-2021 for new changes-->
+            <!-- <div class="slds-var-p-around_medium lgc-bg">
+                <lightning-input label="Use logged in user for Credit App" checked={obj.TSGCFG__Use_logged_in_user_for_credit_app__c} value={obj.TSGCFG__Use_logged_in_user_for_credit_app__c} name="TSGCFG__Use_logged_in_user_for_credit_app__c" onchange={changeHandler} type="checkbox" ></lightning-input>
+            </div> -->
+
+            <div class="slds-var-m-around_medium">
+                <!-- Brand variant: Identifies the primary action in a group of buttons -->
+                <lightning-button variant="brand" label="Save" title="Primary action" onclick={validateData} class="slds-var-m-left_x-small"></lightning-button>
+            </div>
+        </div>
+    </lightning-card>
+</template>
